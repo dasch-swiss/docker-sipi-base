@@ -23,6 +23,7 @@ RUN \
   apt-get -y install libreadline-dev && \
   apt-get -y install liblog4cpp5-dev && \
   apt-get -y install libssl-dev && \
+  apt-get -y install libmagic-dev && \
   rm -rf /var/lib/apt/lists/*
 
 # Set environment variables
