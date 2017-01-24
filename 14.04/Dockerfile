@@ -26,6 +26,7 @@ RUN \
   apt-get -y install libreadline-dev && \
   apt-get -y install liblog4cpp5-dev && \
   apt-get -y install libssl-dev && \
+  apt-get -y install libmagic-dev && \
   ln -sf /usr/bin/g++-5 /usr/bin/g++ && \
   rm -rf /var/lib/apt/lists/*
 
