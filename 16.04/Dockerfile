@@ -3,10 +3,13 @@ FROM ubuntu:16.04
 
 MAINTAINER Ivan Subotic <ivan.subotic@unibas.ch>
 
-# Silence debconf messages
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+# Set timezone
+#ENV TZ=ETC/GMT+1
+#RUN \
+#  ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
+#  date
 
-# Install.
+# Install dependencies
 RUN \
   sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
   apt-get -qq update && \
