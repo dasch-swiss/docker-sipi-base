@@ -24,7 +24,6 @@ RUN \
   python3-pip \
   libmagic-dev \
   graphicsmagick && \
-  chown -R $USER /var/log/nginx && \
   pip3 install --upgrade pip && pip3 install \
   Sphinx \
   pytest \
