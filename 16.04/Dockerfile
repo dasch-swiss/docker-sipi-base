@@ -23,7 +23,17 @@ RUN \
   python3 \
   python3-pip \
   libmagic-dev \
+  libtiff5-dev \
+  libopenjp2-7-dev \
   graphicsmagick && \
+  wget https://github.com/ImageMagick/ImageMagick/archive/7.0.6-0.tar.gz && \
+  tar -xzf 7.0.6-0.tar.gz && \
+  cd ImageMagick-7.0.6-0/ && \
+  ./configure && \
+  make && \
+  make install && \
+  ldconfig /usr/local/lib && \
+  cd .. && \
   pip3 install --upgrade pip && pip3 install \
   Sphinx \
   pytest \
