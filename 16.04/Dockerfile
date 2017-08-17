@@ -25,7 +25,8 @@ RUN \
   libmagic-dev \
   libtiff5-dev \
   libopenjp2-7-dev \
-  graphicsmagick && \
+  graphicsmagick \
+  apache2-utils && \
   wget https://github.com/ImageMagick/ImageMagick/archive/7.0.6-0.tar.gz && \
   tar -xzf 7.0.6-0.tar.gz && \
   cd ImageMagick-7.0.6-0/ && \
