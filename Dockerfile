@@ -6,7 +6,7 @@ MAINTAINER Ivan Subotic <ivan.subotic@unibas.ch>
 # Silence debconf messages
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
-# Install.
+# Install build dependencies.
 RUN \
   sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
   apt-get -qq update && apt-get -y install \
@@ -19,23 +19,28 @@ RUN \
   doxygen \
   libreadline-dev \
   gettext \
+  libmagic-dev
+
+# Install additional test dependencies.
+RUN apt-get -y install \
   nginx \
-  python3 \
-  python3-pip \
-  libmagic-dev \
   libtiff5-dev \
   libopenjp2-7-dev \
   graphicsmagick \
   apache2-utils && \
-  wget https://github.com/ImageMagick/ImageMagick/archive/7.0.6-0.tar.gz && \
-  tar -xzf 7.0.6-0.tar.gz && \
-  cd ImageMagick-7.0.6-0/ && \
+  wget https://www.imagemagick.org/download/ImageMagick.tar.gz && \
+  tar xf ImageMagick.tar.gz && \
+  cd ImageMagick-7* && \
   ./configure && \
   make && \
   make install && \
-  ldconfig /usr/local/lib && \
-  cd .. && \
-  pip3 install --upgrade pip && pip3 install \
+  ldconfig /usr/local/lib
+
+# Install python and python packages
+RUN apt-get -y install \
+  python3 \
+  python3-pip && \
+  pip3 install \
   Sphinx \
   pytest \
   requests \
