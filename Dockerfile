@@ -19,7 +19,8 @@ RUN \
   doxygen \
   libreadline-dev \
   gettext \
-  libmagic-dev
+  libmagic-dev \
+  pkg-config
 
 # Install additional test dependencies.
 RUN apt-get -y install \
