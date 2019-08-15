@@ -20,7 +20,8 @@ RUN \
   libreadline-dev \
   gettext \
   libmagic-dev \
-  pkg-config
+  pkg-config \
+  util-linux
 
 # Install additional test dependencies.
 RUN apt-get -y install \
