@@ -21,7 +21,8 @@ RUN \
   gettext \
   libmagic-dev \
   pkg-config \
-  util-linux
+  util-linux \
+  gperf
 
 # Install additional test dependencies.
 RUN apt-get -y install \
