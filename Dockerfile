@@ -1,10 +1,13 @@
 ## Pull base image.
 FROM ubuntu:18.04
 
-MAINTAINER Ivan Subotic <ivan.subotic@unibas.ch>
+LABEL maintainer="Ivan.Subotic@unibas.ch"
 
 # Silence debconf messages
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+
+# The CMake version which should be downloaded and installed
+ENV CMAKE_VERSION 3.14.5
 
 # Install build dependencies.
 RUN \
@@ -14,7 +17,6 @@ RUN \
   build-essential \
   byobu curl git htop man vim wget unzip \
   g++-5 \
-  cmake \
   libssl-dev \
   doxygen \
   libreadline-dev \
@@ -23,6 +25,14 @@ RUN \
   pkg-config \
   util-linux \
   gperf
+
+# Install newer CMake version (Ubuntu 18.04 default is CMake 3.10.2)
+RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz && \
+  tar -zxvf cmake-${CMAKE_VERSION}.tar.gz && \
+  cd cmake-${CMAKE_VERSION} && \
+  ./bootstrap && \
+  make && \
+  make install
 
 # Install additional test dependencies.
 RUN apt-get -y install \
