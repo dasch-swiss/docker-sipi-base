@@ -17,6 +17,7 @@ RUN \
   build-essential \
   byobu curl git htop man vim wget unzip \
   g++-5 \
+  ninja-build \
   libssl-dev \
   doxygen \
   libreadline-dev \
