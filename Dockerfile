@@ -22,7 +22,6 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     lld-8 \
     libc++-8-dev libc++abi-8-dev \
     libomp-8-dev \
-    g++ \
     openjdk-8-jdk \
     openssl \
     libssl-dev \
@@ -36,6 +35,8 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
 
 # Set environment variables
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+ENV CC clang-8
+ENV CXX clang++-8
 
 # Install newer CMake version (Ubuntu 18.04 default is CMake 3.10.2)
 RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz && \
