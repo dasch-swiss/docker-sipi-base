@@ -22,6 +22,7 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     lld-8 \
     libc++-8-dev libc++abi-8-dev \
     libomp-8-dev \
+    g++-7 \
     openjdk-8-jdk \
     openssl \
     libssl-dev \
@@ -31,7 +32,8 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     libmagic-dev \
     pkg-config \
     util-linux \
-    gperf
+    gperf \
+    libidn11-dev
 
 # Set environment variables
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
