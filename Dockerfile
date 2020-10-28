@@ -1,7 +1,7 @@
 ## Pull base image.
 FROM ubuntu:18.04
 
-LABEL maintainer="Ivan.Subotic@unibas.ch"
+LABEL maintainer="400790+subotic@users.noreply.github.com"
 
 # Silence debconf messages
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
