@@ -15,9 +15,9 @@ jobs:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 1
-      - name: build
+      - name: build (allways)
         run: make build
-      - name: build
+      - name: publish (only on release)
         if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags')
         run: |
           echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
