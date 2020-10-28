@@ -12,8 +12,11 @@ build: ## build Docker image locally
 	docker tag $(DOCKER_IMAGE) $(DOCKER_REPO):latest
 
 .PHONY: publish
-publish: build ## publish Docker image to Docker-Hub
+publish: ## publish Docker image to Docker-Hub
 	docker push $(DOCKER_REPO)
+
+.PHONY: build-and-publish
+build-and-publish: build publish ## build and publish Docker image to Docker-Hub
 
 .PHONY: help
 help: ## this help
