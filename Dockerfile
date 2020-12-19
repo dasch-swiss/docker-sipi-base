@@ -47,6 +47,10 @@ ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 ENV CC clang-11
 ENV CXX clang++-11
 
+# Install Bazelisk
+RUN curl -Lo /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v1.7.4/bazelisk-linux-amd64 && \
+    chmod +x /usr/local/bin/bazel
+
 # Install additional test dependencies.
 RUN apt-get clean && apt-get -y install \
     nginx \
@@ -64,7 +68,7 @@ RUN apt-get clean && apt-get -y install \
 
 # Install python and python packages
 RUN apt-get clean && apt-get -y install \
-    python3 \
+    python3.9 \
     python3-pip && \
     pip3 install \
     Sphinx \
