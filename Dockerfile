@@ -40,7 +40,16 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     pkg-config \
     util-linux \
     gperf \
-    libidn11-dev
+    libidn11-dev \
+    locales
+
+# add locales
+RUN locale-gen en_US.UTF-8 && \
+    locale-gen sr_RS.UTF-8
+
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
 
 # Set environment variables
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
