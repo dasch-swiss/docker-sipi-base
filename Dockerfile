@@ -41,7 +41,9 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     util-linux \
     gperf \
     libidn11-dev \
-    locales
+    locales \
+    uuid \
+    uuid-dev
 
 # add locales
 RUN locale-gen en_US.UTF-8 && \
