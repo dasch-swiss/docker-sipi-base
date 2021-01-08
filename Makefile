@@ -6,17 +6,22 @@ CURRENT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 include vars.mk
 
-.PHONY: build
-build: ## build Docker image locally
-	docker build -t $(DOCKER_IMAGE) .
-	docker tag $(DOCKER_IMAGE) $(DOCKER_REPO):latest
+.PHONY: build-and-push
+build-and-push: ## build and push multiplatform Docker image to Docker Hub
+	# linux/amd64 (e.g., intel), linux/arm64 (e.g., Apple Silicon), linux/arm/v7 (e.g., Raspberry Pi)
+	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t $(DOCKER_IMAGE) -t $(DOCKER_REPO):latest --push .
 
-.PHONY: publish
-publish: ## publish Docker image to Docker-Hub
-	docker push $(DOCKER_REPO)
+.PHONY: build-amd64
+build-amd64: ## build linux/amd64 Docker image locally
+	docker buildx build --platform linux/amd64 -t $(DOCKER_IMAGE) -t $(DOCKER_REPO):latest --load .
 
-.PHONY: build-and-publish
-build-and-publish: build publish ## build and publish Docker image to Docker-Hub
+.PHONY: build-arm64
+build-arm64: ## build linux/arm64 Docker image locally
+	docker buildx build --platform linux/arm64 -t $(DOCKER_IMAGE) -t $(DOCKER_REPO):latest --load .
+
+.PHONY: build-armv7
+build-armv7: ## build linux/arm/v7 Docker image locally
+	docker buildx build --platform linux/arm/v7 -t $(DOCKER_IMAGE) -t $(DOCKER_REPO):latest --load .
 
 .PHONY: help
 help: ## this help
