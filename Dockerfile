@@ -45,7 +45,9 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     libidn11-dev \
     locales \
     uuid \
-    uuid-dev
+    uuid-dev \
+    ffmpeg \
+    at
 
 # add locales
 RUN locale-gen en_US.UTF-8 && \
