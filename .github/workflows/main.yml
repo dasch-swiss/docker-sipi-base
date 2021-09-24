@@ -7,9 +7,9 @@ on:
 
 jobs:
   
-  # build allways
+  # build always
   build:
-    name: Build allways and publish on release
+    name: Build always and publish on release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,7 +27,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-      - name: Build (allways) and push (on release)
+      - name: Build (always) and push (on release)
         id: docker_build
         uses: docker/build-push-action@v2
         with:
