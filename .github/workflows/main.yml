@@ -33,6 +33,6 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64/v8
           push: ${{ github.event_name == 'release' }}
           tags: daschswiss/sipi-base:latest, daschswiss/sipi-base:${{ steps.get_version.outputs.VERSION }}
