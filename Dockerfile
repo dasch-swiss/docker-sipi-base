@@ -40,7 +40,6 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     gettext \
     libmagic-dev \
     pkg-config \
-    util-linux \
     gperf \
     libidn11-dev \
     locales \
