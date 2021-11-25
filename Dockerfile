@@ -32,6 +32,7 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     libc++-11-dev libc++abi-11-dev \
     libomp-11-dev \
     g++-10 \
+    valgrind \
     openjdk-11-jdk \
     openssl \
     libssl-dev \
