@@ -5,9 +5,6 @@ FROM ubuntu:20.04 as base
 
 LABEL maintainer="400790+subotic@users.noreply.github.com"
 
-# The CMake version which should be downloaded and installed
-ENV CMAKE_VERSION 3.22.2
-
 # Silence debconf messages
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -63,14 +60,6 @@ ENV LANGUAGE=en_US.UTF-8
 ENV CC clang-11
 ENV CXX clang++-11
 
-# Install newer CMake version
-RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz && \
-    tar -zxvf cmake-${CMAKE_VERSION}.tar.gz && \
-    cd cmake-${CMAKE_VERSION} && \
-    ./bootstrap && \
-    make && \
-    make install
-
 # Install additional test dependencies.
 RUN apt-get clean && apt-get -y install \
     nginx \
@@ -109,6 +98,12 @@ ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 RUN curl -Lo /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v1.7.4/bazelisk-linux-amd64 && \
     chmod +x /usr/local/bin/bazel
 
+# The CMake version which should be downloaded and installed
+ENV CMAKE_VERSION 3.22.2
+
+# Install CMake
+RUN curl -LO https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.sh && \
+    /bin/sh cmake-${CMAKE_VERSION}-linux-x86_64.sh --skip-license
 
 #
 # The linux/arm64 variant (e.g., Apple Silicon CPUs, Amazon ARM instances, etc.)
@@ -122,19 +117,12 @@ ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-arm64
 RUN curl -Lo /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v1.7.4/bazelisk-linux-arm64 && \
     chmod +x /usr/local/bin/bazel
 
+# The CMake version which should be downloaded and installed
+ENV CMAKE_VERSION 3.22.2
 
-#
-# The linux/arm/v7 variant (e.g., Raspberry Pi, etc.)
-#
-FROM base as platform-linux-arm-v7
-
-# TODO: need to find which java and how to compile bazelisk for Pi.
-# ARG TARGETOS
-# ARG TARGETARCH
-# ENV GOOS=$TARGETOS GOARCH=$TARGETARCH
-# RUN go build ...
-
-
+# Install CMake
+RUN curl -LO https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-aarch64.sh && \
+    /bin/sh cmake-${CMAKE_VERSION}-linux-aarch64.sh --skip-license
 
 # Expose global variables
 ARG TARGETPLATFORM
