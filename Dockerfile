@@ -132,4 +132,4 @@ ARG TARGETVARIANT
 #
 # The final platform specific image
 #
-FROM platform-${TARGETOS}-${TARGETARCH}-${TARGETVARIANT}
+FROM platform-${TARGETOS}-${TARGETARCH}
