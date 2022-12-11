@@ -74,7 +74,7 @@ RUN apt-get clean && apt-get -y install \
 
 # Install python and python packages
 RUN apt-get clean && apt-get -y install \
-    python3.9 \
+    python3.10 \
     python3-pip && \
     pip3 install \
     Sphinx \
