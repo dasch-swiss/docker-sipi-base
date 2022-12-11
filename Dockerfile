@@ -88,7 +88,7 @@ RUN apt-get clean && apt-get -y install \
 #
 # The linux/amd64 variant (e.g., Intel CPUs, etc.)
 #
-FROM base as platform-linux-amd64-
+FROM base as platform-linux-amd64
 
 # Set environment variables
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
@@ -107,7 +107,7 @@ RUN curl -LO https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION
 #
 # The linux/arm64 variant (e.g., Apple Silicon CPUs, Amazon ARM instances, etc.)
 #
-FROM base as platform-linux-arm64-
+FROM base as platform-linux-arm64
 
 # Set environment variables
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-arm64
