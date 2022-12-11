@@ -1,7 +1,7 @@
 #
 # The base image layer. Per default, FROM uses the $TARGETPLATFORM.
 #
-FROM ubuntu:20.04 as base
+FROM ubuntu:20.04
 
 LABEL maintainer="400790+subotic@users.noreply.github.com"
 
@@ -22,6 +22,7 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     ca-certificates \
     byobu curl git htop man vim wget unzip \
     build-essential \
+    cmake \
     libllvm-11-ocaml-dev libllvm11 llvm-11 llvm-11-dev llvm-11-doc llvm-11-runtime \
     clang-11 clang-tools-11 clang-11-doc libclang-common-11-dev libclang-11-dev libclang1-11 clang-format-11 \
     libfuzzer-11-dev \
@@ -46,6 +47,7 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     uuid-dev \
     ffmpeg \
     at
+    
 
 # add locales
 RUN locale-gen en_US.UTF-8 && \
@@ -83,44 +85,3 @@ RUN apt-get clean && apt-get -y install \
     psutil \
     iiif_validator && \
     rm -rf /var/lib/apt/lists/*
-
-
-#
-# The linux/amd64 variant (e.g., Intel CPUs, etc.)
-#
-FROM base as platform-linux-amd64
-
-# Set environment variables
-ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
-
-# The CMake version which should be downloaded and installed
-ENV CMAKE_VERSION 3.24.1
-
-# Install CMake
-RUN curl -LO https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.sh && \
-    /bin/sh cmake-${CMAKE_VERSION}-linux-x86_64.sh --skip-license
-
-#
-# The linux/arm64 variant (e.g., Apple Silicon CPUs, Amazon ARM instances, etc.)
-#
-FROM base as platform-linux-arm64
-
-# Set environment variables
-ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-arm64
-
-# The CMake version which should be downloaded and installed
-ENV CMAKE_VERSION 3.24.1
-
-# Install CMake
-RUN curl -LO https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-aarch64.sh && \
-    /bin/sh cmake-${CMAKE_VERSION}-linux-aarch64.sh --skip-license
-
-# Expose global variables
-ARG TARGETPLATFORM
-ARG TARGETOS
-ARG TARGETARCH
-
-#
-# The final platform specific image
-#
-FROM platform-${TARGETOS}-${TARGETARCH}
