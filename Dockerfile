@@ -93,10 +93,6 @@ FROM base as platform-linux-amd64
 # Set environment variables
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 
-# Install Bazelisk
-RUN curl -Lo /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v1.7.4/bazelisk-linux-amd64 && \
-    chmod +x /usr/local/bin/bazel
-
 # The CMake version which should be downloaded and installed
 ENV CMAKE_VERSION 3.24.1
 
@@ -112,12 +108,8 @@ FROM base as platform-linux-arm64
 # Set environment variables
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-arm64
 
-# Install Bazelisk
-RUN curl -Lo /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v1.7.4/bazelisk-linux-arm64 && \
-    chmod +x /usr/local/bin/bazel
-
 # The CMake version which should be downloaded and installed
-ENV CMAKE_VERSION 3.22.2
+ENV CMAKE_VERSION 3.24.1
 
 # Install CMake
 RUN curl -LO https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-aarch64.sh && \
@@ -127,7 +119,6 @@ RUN curl -LO https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION
 ARG TARGETPLATFORM
 ARG TARGETOS
 ARG TARGETARCH
-ARG TARGETVARIANT
 
 #
 # The final platform specific image
