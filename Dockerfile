@@ -22,7 +22,6 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     ca-certificates \
     byobu curl git htop man vim wget unzip \
     build-essential \
-    ccache \
     libllvm-11-ocaml-dev libllvm11 llvm-11 llvm-11-dev llvm-11-doc llvm-11-runtime \
     clang-11 clang-tools-11 clang-11-doc libclang-common-11-dev libclang-11-dev libclang1-11 clang-format-11 \
     libfuzzer-11-dev \
@@ -89,7 +88,7 @@ RUN apt-get clean && apt-get -y install \
 #
 # The linux/amd64 variant (e.g., Intel CPUs, etc.)
 #
-FROM base as platform-linux-amd64-
+FROM base as platform-linux-amd64
 
 # Set environment variables
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
@@ -99,7 +98,7 @@ RUN curl -Lo /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/release
     chmod +x /usr/local/bin/bazel
 
 # The CMake version which should be downloaded and installed
-ENV CMAKE_VERSION 3.22.2
+ENV CMAKE_VERSION 3.24.1
 
 # Install CMake
 RUN curl -LO https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.sh && \
@@ -108,7 +107,7 @@ RUN curl -LO https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION
 #
 # The linux/arm64 variant (e.g., Apple Silicon CPUs, Amazon ARM instances, etc.)
 #
-FROM base as platform-linux-arm64-
+FROM base as platform-linux-arm64
 
 # Set environment variables
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-arm64
@@ -133,4 +132,4 @@ ARG TARGETVARIANT
 #
 # The final platform specific image
 #
-FROM platform-${TARGETOS}-${TARGETARCH}-${TARGETVARIANT}
+FROM platform-${TARGETOS}-${TARGETARCH}
