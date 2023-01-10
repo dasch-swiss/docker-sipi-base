@@ -15,8 +15,8 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
 
 # Install build dependencies.
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
-    echo 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-11 main' | tee -a /etc/apt/sources.list && \
-    echo 'deb-src http://apt.llvm.org/focal/ llvm-toolchain-focal-11 main' | tee -a /etc/apt/sources.list && \
+    echo 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-11 main' | tee -a /etc/apt/sources.list && \
+    echo 'deb-src http://apt.llvm.org/jammy/ llvm-toolchain-jammy-11 main' | tee -a /etc/apt/sources.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 15CF4D18AF4F7421 && \
     apt-get clean && apt-get -qq update && apt-get -y install \
     ca-certificates \
