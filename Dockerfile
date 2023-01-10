@@ -1,7 +1,7 @@
 #
 # The base image layer. Per default, FROM uses the $TARGETPLATFORM.
 #
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 LABEL maintainer="400790+subotic@users.noreply.github.com"
 
