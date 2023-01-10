@@ -11,28 +11,24 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     apt-get clean && apt-get -qq update && apt-get -y install \
     ca-certificates \
-    gnupg2
+    gnupg2 \
+    wget
 
 # Install build dependencies.
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
-    echo 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-11 main' | tee -a /etc/apt/sources.list && \
-    echo 'deb-src http://apt.llvm.org/jammy/ llvm-toolchain-jammy-11 main' | tee -a /etc/apt/sources.list && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 15CF4D18AF4F7421 && \
+    echo 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-14 main' | tee -a /etc/apt/sources.list && \
+    echo 'deb-src http://apt.llvm.org/jammy/ llvm-toolchain-jammy-14 main' | tee -a /etc/apt/sources.list && \
+    wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted.gpg.d/myrepo.asc && \
     apt-get clean && apt-get -qq update && apt-get -y install \
-    ca-certificates \
     byobu curl git htop man vim wget unzip \
     build-essential \
     cmake \
-    libllvm-11-ocaml-dev libllvm11 llvm-11 llvm-11-dev llvm-11-doc llvm-11-runtime \
-    clang-11 clang-tools-11 clang-11-doc libclang-common-11-dev libclang-11-dev libclang1-11 clang-format-11 \
-    libfuzzer-11-dev \
-    lldb-11 \
-    lld-11 \
-    libc++-11-dev libc++abi-11-dev \
-    libomp-11-dev \
-    g++-10 \
+    libllvm-14-ocaml-dev libllvm14 llvm-14 llvm-14-dev llvm-14-doc llvm-14-examples llvm-14-runtime \
+    clang-14 clang-tools-14 clang-14-doc libclang-common-14-dev libclang-14-dev libclang1-14 clang-format-14 python3-clang-14 clangd-14 clang-tidy-14 \
+    libfuzzer-14-dev lldb-14 lld-14 libc++-14-dev libc++abi-14-dev libomp-14-dev \
+    g++-12 \
     valgrind \
-    openjdk-11-jdk \
+    openjdk-17-jdk \
     openssl \
     libssl-dev \
     doxygen \
@@ -58,8 +54,8 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 
 # Set environment variables
-ENV CC clang-11
-ENV CXX clang++-11
+ENV CC clang-14
+ENV CXX clang++-14
 
 # Install additional test dependencies.
 RUN apt-get clean && apt-get -y install \
