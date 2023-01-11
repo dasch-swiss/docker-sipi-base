@@ -12,15 +12,11 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     apt-get clean && apt-get -qq update && apt-get -y install \
     ca-certificates \
     gnupg2 \
-    wget
+    byobu curl git htop man vim unzip wget
 
 # Install build dependencies.
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
-    echo 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-14 main' | tee -a /etc/apt/sources.list && \
-    echo 'deb-src http://apt.llvm.org/jammy/ llvm-toolchain-jammy-14 main' | tee -a /etc/apt/sources.list && \
-    wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted.gpg.d/myrepo.asc && \
     apt-get clean && apt-get -qq update && apt-get -y install \
-    byobu curl git htop man vim wget unzip \
     build-essential \
     cmake \
     libllvm-14-ocaml-dev libllvm14 llvm-14 llvm-14-dev llvm-14-doc llvm-14-examples llvm-14-runtime \
