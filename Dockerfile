@@ -8,17 +8,22 @@ LABEL maintainer="400790+subotic@users.noreply.github.com"
 # Silence debconf messages
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
-    apt-get clean && apt-get -qq update && apt-get -y install \
+RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
+  && apt-get clean \
+  && apt-get -qq update  \
+  && apt-get -y install \
     ca-certificates \
     gnupg2 \
-    byobu curl git htop man vim unzip wget
+    byobu curl git htop man vim unzip wget \
+  && apt-get clean
 
 # Install build dependencies.
-RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
-    echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list && \
-    wget -qO- https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/trusted.gpg.d/adoptium.asc && \
-    apt-get clean && apt-get -qq update && apt-get -y install \
+RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
+  && echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list \
+  && wget -qO- https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/trusted.gpg.d/adoptium.asc \
+  && apt-get clean \
+  && apt-get -qq update \
+  && apt-get -y install \
     build-essential \
     cmake \
     libllvm-14-ocaml-dev libllvm14 llvm-14 llvm-14-dev llvm-14-doc llvm-14-examples llvm-14-runtime \
@@ -42,7 +47,8 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     uuid-dev \
     ffmpeg \
     at \
-    file
+    file \
+  && apt-get clean
     
 
 # add locales
@@ -61,7 +67,7 @@ ENV CXX=clang++-14
 ENV JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64
 
 # Install additional test dependencies.
-RUN apt-get clean && apt-get -y install \
+RUN apt-get -y install  \
     nginx \
     libtiff5-dev \
     libopenjp2-7-dev \
@@ -71,10 +77,11 @@ RUN apt-get clean && apt-get -y install \
     libxml2 \
     libxml2-dev \
     libxslt1.1 \
-    libxslt1-dev
+    libxslt1-dev \
+  && apt-get clean
 
 # Install python and python packages
-RUN apt-get clean && apt-get -y install \
+RUN apt-get -y install \
     python3.10 \
     python3-pip && \
     pip3 install \
@@ -83,4 +90,5 @@ RUN apt-get clean && apt-get -y install \
     requests \
     psutil \
     iiif_validator && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* \
+  && apt-get clean
