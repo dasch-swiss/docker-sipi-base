@@ -16,6 +16,8 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
 
 # Install build dependencies.
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
+    echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list && \
+    wget -qO- https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/trusted.gpg.d/adoptium.asc && \
     apt-get clean && apt-get -qq update && apt-get -y install \
     build-essential \
     cmake \
@@ -24,11 +26,12 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     libfuzzer-14-dev lldb-14 lld-14 libc++-14-dev libc++abi-14-dev libomp-14-dev \
     g++-12 \
     valgrind \
-    openjdk-17-jdk \
+    temurin-17-jdk \
     openssl \
     libssl-dev \
     doxygen \
-    libreadline-dev \
+    libreadline-dev  \
+    libacl1-dev \
     gettext \
     libmagic-dev \
     pkg-config \
@@ -38,7 +41,8 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
     uuid \
     uuid-dev \
     ffmpeg \
-    at
+    at \
+    file
     
 
 # add locales
@@ -49,9 +53,12 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 
-# Set environment variables
-ENV CC clang-14
-ENV CXX clang++-14
+# Set compiler environment variables
+ENV CC=clang-14
+ENV CXX=clang++-14
+
+# Set java home environment variable
+ENV JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64
 
 # Install additional test dependencies.
 RUN apt-get clean && apt-get -y install \
