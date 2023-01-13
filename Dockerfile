@@ -24,7 +24,7 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
   && apt-get clean \
   && apt-get -qq update \
   && apt-get -y install \
-    build-essential \
+    make \
     cmake \
     libllvm-14-ocaml-dev libllvm14 llvm-14 llvm-14-dev llvm-14-doc llvm-14-examples llvm-14-runtime \
     clang-14 clang-tools-14 clang-14-doc libclang-common-14-dev libclang-14-dev libclang1-14 clang-format-14 python3-clang-14 clangd-14 clang-tidy-14 \
@@ -82,7 +82,7 @@ RUN apt-get -y install  \
 
 # Install python and python packages
 RUN apt-get -y install \
-    python3.10 \
+    python3.11 \
     python3-pip && \
     pip3 install \
     Sphinx \
