@@ -63,7 +63,7 @@ ENV CC=clang-14
 ENV CXX=clang++-14
 
 # Install newer CMake version
-ENV CMAKE_VERSION 3.24.0
+ENV CMAKE_VERSION 3.24.3
 RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz \
   && tar -zxvf cmake-${CMAKE_VERSION}.tar.gz \
   && cd cmake-${CMAKE_VERSION} \
