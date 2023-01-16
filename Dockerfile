@@ -46,7 +46,6 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
     uuid-dev \
     ffmpeg \
     at \
-    libmagic1 \
     libmagic-dev \
     file \
   && apt-get clean
