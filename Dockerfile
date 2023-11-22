@@ -7,7 +7,6 @@ LABEL maintainer="400790+subotic@users.noreply.github.com"
 
 # Silence debconf messages
 ARG DEBIAN_FRONTEND=noninteractive
-
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
   && apt-get clean \
   && apt-get -qq update  \
@@ -70,7 +69,8 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cm
   && cd cmake-${CMAKE_VERSION} \
   && ./bootstrap \
   && make \
-  && make install
+  && make install \
+  && cmake --version
 
 # Install sentry-cli
 ENV SENTRY_CLI_VERSION 2.21.5
