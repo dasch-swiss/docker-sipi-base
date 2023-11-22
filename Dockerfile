@@ -7,7 +7,6 @@ LABEL maintainer="400790+subotic@users.noreply.github.com"
 
 # Silence debconf messages
 ARG DEBIAN_FRONTEND=noninteractive
-
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
   && apt-get clean \
   && apt-get -qq update  \
@@ -64,13 +63,18 @@ ENV CC=clang-14
 ENV CXX=clang++-14
 
 # Install newer CMake version
-ENV CMAKE_VERSION 3.24.3
+ENV CMAKE_VERSION 3.27.8
 RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz \
   && tar -zxvf cmake-${CMAKE_VERSION}.tar.gz \
   && cd cmake-${CMAKE_VERSION} \
   && ./bootstrap \
   && make \
-  && make install
+  && make install \
+  && cmake --version
+
+# Install sentry-cli
+ENV SENTRY_CLI_VERSION 2.21.5
+RUN curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION=${SENTRY_CLI_VERSION} bash
 
 # Install additional test dependencies.
 RUN apt-get -y install  \
