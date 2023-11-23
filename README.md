@@ -7,7 +7,7 @@ Docker image containing the base environment necessary to build and run the SIPI
 In your dockerfile add:
 
 ```Dockerfile
-FROM daschswiss/sipi-base:2.19.0
+FROM daschswiss/sipi-base:2.19.1
 ```
 
 ## Multiplatform Build Resources
