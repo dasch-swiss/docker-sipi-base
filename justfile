@@ -20,7 +20,7 @@ build-arm64:
 
 # push previously build linux/arm64 image to Docker hub
 push-arm64:
-	docker push $(DOCKER_IMAGE)-arm64
+	docker push {{DOCKER_IMAGE}}-arm64
 
 # publish Docker manifest combining aarch64 and x86 published images
 publish-manifest:
