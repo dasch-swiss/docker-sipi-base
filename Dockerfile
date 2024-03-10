@@ -14,6 +14,7 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
     ca-certificates \
     gnupg2 \
     byobu curl git htop man vim unzip wget \
+    software-properties-common \
   && apt-get clean
 
 # Install build dependencies.
