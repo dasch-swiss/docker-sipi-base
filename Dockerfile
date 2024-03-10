@@ -38,7 +38,6 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
     libclc-18-dev \
     libunwind-18-dev \
     libmlir-18-dev mlir-18-tools \
-    libbolt-18-dev bolt-18 \
     flang-18 \
     libclang-rt-18-dev-wasm32 libclang-rt-18-dev-wasm64 libc++-18-dev-wasm32 libc++abi-18-dev-wasm32 libclang-rt-18-dev-wasm32 libclang-rt-18-dev-wasm64 \
     valgrind \
