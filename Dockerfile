@@ -50,10 +50,6 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
     libmlir-18-dev mlir-18-tools \
     # bolt
     libbolt-18-dev bolt-18 \
-    # flang
-    install flang-18 \
-    # wasm support
-    libclang-rt-18-dev-wasm32 libclang-rt-18-dev-wasm64 libc++-18-dev-wasm32 libc++abi-18-dev-wasm32 libclang-rt-18-dev-wasm32 libclang-rt-18-dev-wasm64 \
     valgrind \
     temurin-17-jdk \
     openssl \
