@@ -20,6 +20,8 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
   && echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list \
   && wget -qO- https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/trusted.gpg.d/adoptium.asc \
+  && wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/llvm-archive-keyring.gpg \
+  && echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] https://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main" | sudo tee /etc/apt/sources.list.d/llvm-18.list
   && apt-get clean \
   && apt-get -qq update \
   && apt-get -y install \
@@ -50,6 +52,10 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
     libmlir-18-dev mlir-18-tools \
     # bolt
     libbolt-18-dev bolt-18 \
+    # flang
+    flang-18 \
+    # wasm support
+    libclang-rt-18-dev-wasm32 libclang-rt-18-dev-wasm64 libc++-18-dev-wasm32 libc++abi-18-dev-wasm32 libclang-rt-18-dev-wasm32 libclang-rt-18-dev-wasm64 \
     valgrind \
     temurin-17-jdk \
     openssl \
@@ -82,11 +88,11 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 
 # Set compiler environment variables
-ENV CC=clang-14
-ENV CXX=clang++-14
+ENV CC=clang-18
+ENV CXX=clang++-18
 
 # Install newer CMake version
-ENV CMAKE_VERSION 3.27.8
+ENV CMAKE_VERSION 3.28.3
 RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz \
   && tar -zxvf cmake-${CMAKE_VERSION}.tar.gz \
   && cd cmake-${CMAKE_VERSION} \
@@ -94,10 +100,6 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cm
   && make \
   && make install \
   && cmake --version
-
-# Install sentry-cli
-ENV SENTRY_CLI_VERSION 2.21.5
-RUN curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION=${SENTRY_CLI_VERSION} bash
 
 # Install additional test dependencies.
 RUN apt-get -y install  \
