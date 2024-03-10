@@ -20,41 +20,26 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
   && echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list \
   && wget -qO- https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/trusted.gpg.d/adoptium.asc \
-  && wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/llvm-archive-keyring.gpg \
-  && echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] https://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main" | sudo tee /etc/apt/sources.list.d/llvm-18.list \
+  && wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | gpg --dearmor -o /usr/share/keyrings/llvm-archive-keyring.gpg \
+  && echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] https://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main" | tee /etc/apt/sources.list.d/llvm-18.list \
   && apt-get clean \
   && apt-get -qq update \
   && apt-get -y install \
     make \
-    # LLVM
     libllvm-18-ocaml-dev libllvm18 llvm-18 llvm-18-dev llvm-18-doc llvm-18-examples llvm-18-runtime \
-    # Clang and co
     clang-18 clang-tools-18 clang-18-doc libclang-common-18-dev libclang-18-dev libclang1-18 clang-format-18 python3-clang-18 clangd-18 clang-tidy-18 \
-    # compiler-rt
     libclang-rt-18-dev \
-    # polly
     libpolly-18-dev \
-    # libfuzzer
     libfuzzer-18-dev \
-    # lldb
     lldb-18 \
-    # lld (linker)
     lld-18 \
-    # libc++
     libc++-18-dev libc++abi-18-dev \
-    # OpenMP
     libomp-18-dev \
-    # libclc
     libclc-18-dev \
-    # libunwind
     libunwind-18-dev \
-    # mlir
     libmlir-18-dev mlir-18-tools \
-    # bolt
     libbolt-18-dev bolt-18 \
-    # flang
     flang-18 \
-    # wasm support
     libclang-rt-18-dev-wasm32 libclang-rt-18-dev-wasm64 libc++-18-dev-wasm32 libc++abi-18-dev-wasm32 libclang-rt-18-dev-wasm32 libclang-rt-18-dev-wasm64 \
     valgrind \
     temurin-17-jdk \
