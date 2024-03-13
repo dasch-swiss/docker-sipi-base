@@ -45,6 +45,8 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
     g++13 \
     valgrind \
     temurin-17-jdk \
+    curl \
+    libcurl4-openssl-dev \
     openssl \
     libssl-dev \
     doxygen \
