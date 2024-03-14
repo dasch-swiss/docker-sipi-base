@@ -21,27 +21,11 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
   && echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list \
   && wget -qO- https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/trusted.gpg.d/adoptium.asc \
-  && wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | gpg --dearmor -o /usr/share/keyrings/llvm-archive-keyring.gpg \
-  && echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] https://apt.llvm.org/jammy/ llvm-toolchain-jammy-17 main" | tee /etc/apt/sources.list.d/llvm-17.list \
   && apt-add-repository "deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu jammy main" \
   && apt-get clean \
   && apt-get -qq update \
   && apt-get -y install \
     make \
-    libllvm-17-ocaml-dev libllvm17 llvm-17 llvm-17-dev llvm-17-doc llvm-17-runtime \
-    clang-17 clang-tools-17 clang-17-doc libclang-common-17-dev libclang-17-dev libclang1-17 clang-format-17 python3-clang-17 clangd-17 clang-tidy-17 \
-    libclang-rt-17-dev \
-    libpolly-17-dev \
-    libfuzzer-17-dev \
-    lldb-17 \
-    lld-17 \
-    libc++-17-dev libc++abi-17-dev \
-    libomp-17-dev \
-    libclc-17-dev \
-    libunwind-17-dev \
-    libmlir-17-dev mlir-17-tools \
-    flang-17 \
-    libclang-rt-17-dev-wasm32 libclang-rt-17-dev-wasm64 libc++-17-dev-wasm32 libc++abi-17-dev-wasm32 libclang-rt-17-dev-wasm32 libclang-rt-17-dev-wasm64 \
     g++13 \
     valgrind \
     temurin-17-jdk \
