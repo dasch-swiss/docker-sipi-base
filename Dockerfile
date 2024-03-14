@@ -14,17 +14,15 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Install required packages and add the PPA for GCC 13
+# Install required packages, add the PPA for GCC 13, and install GCC 13
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
   && apt-get update \
   && apt-get install -y software-properties-common build-essential \
   && add-apt-repository ppa:ubuntu-toolchain-r/test -y \
   && apt-get update \
+  && apt-get install -y gcc-13 g++-13 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
-
-# Install GCC 13
-RUN apt-get install -y gcc-13 g++-13
 
 # Set GCC 13 as the default gcc and g++
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
@@ -84,7 +82,9 @@ ENV CC=gcc
 ENV CXX=g++
 
 # Install additional test dependencies.
-RUN apt-get -y install  \
+RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
+  && apt-get -qq update \
+  && apt-get -y install \
     nginx \
     libtiff5-dev \
     libopenjp2-7-dev \
@@ -99,7 +99,9 @@ RUN apt-get -y install  \
   && rm -rf /var/lib/apt/lists/*
 
 # Install python and python packages
-RUN apt-get -y install \
+RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
+  && apt-get -qq update \
+  && apt-get -y install \
     python3.11 \
     python3-pip && \
     pip3 install \
