@@ -13,22 +13,24 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
   && apt-get -y install \
     ca-certificates \
     gnupg2 \
-    byobu curl git htop man vim unzip wget \
+    gpg \
+    curl git vim unzip wget \
     software-properties-common \
   && apt-get clean
 
+# Install Kitware repository \
+RUN bash -c "sh <(curl -sL https://apt.kitware.com/kitware-archive.sh)" \
+  && apt-get -qq update
+
 # Install build dependencies.
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
-  && echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list \
-  && wget -qO- https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/trusted.gpg.d/adoptium.asc \
   && apt-add-repository "deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu jammy main" \
   && apt-get clean \
   && apt-get -qq update \
   && apt-get -y install \
-    make \
+    cmake \
     g++13 \
     valgrind \
-    temurin-17-jdk \
     curl \
     libcurl4-openssl-dev \
     openssl \
@@ -60,19 +62,13 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 
-# Set compiler environment variables
-ENV CC=gcc-13
-ENV CXX=g++-13
+RUN printenv
 
-# Install newer CMake version
-ENV CMAKE_VERSION 3.28.3
-RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz \
-  && tar -zxvf cmake-${CMAKE_VERSION}.tar.gz \
-  && cd cmake-${CMAKE_VERSION} \
-  && ./bootstrap \
-  && make \
-  && make install \
-  && cmake --version
+# Set compiler environment variables
+ENV CC=gcc
+ENV CXX=g++
+
+RUN printenv
 
 # Install additional test dependencies.
 RUN apt-get -y install  \
