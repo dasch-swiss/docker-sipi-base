@@ -10,26 +10,40 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
   && apt-get clean \
   && apt-get -qq update  \
-  && apt-get -y install \
-    ca-certificates \
-    gnupg2 \
-    gpg \
-    curl git vim unzip wget \
-    software-properties-common \
-  && apt-get clean
+  && apt-get -y install curl git vim unzip wget \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install required packages and add the PPA for GCC 13
+RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
+  && apt-get update \
+  && apt-get install -y software-properties-common build-essential \
+  && add-apt-repository ppa:ubuntu-toolchain-r/test -y \
+  && apt-get update \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install GCC 13
+RUN apt-get install -y gcc-13 g++-13
+
+# Set GCC 13 as the default gcc and g++
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
+
+# Verify the installation
+RUN gcc --version && g++ --version
 
 # Install Kitware repository \
 RUN bash -c "sh <(curl -sL https://apt.kitware.com/kitware-archive.sh)" \
-  && apt-get -qq update
+  && apt-get -qq update \
+  && apt-get -y install cmake \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install build dependencies.
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
-  && apt-add-repository "deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu jammy main" \
   && apt-get clean \
   && apt-get -qq update \
   && apt-get -y install \
-    cmake \
-    g++13 \
     valgrind \
     curl \
     libcurl4-openssl-dev \
@@ -51,8 +65,11 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
     libmagic-dev \
     file \
     libnuma-dev \
-  && apt-get clean
-    
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN which cmake
+RUN cmake --version
 
 # add locales
 RUN locale-gen en_US.UTF-8 \
@@ -62,13 +79,9 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 
-RUN printenv
-
 # Set compiler environment variables
 ENV CC=gcc
 ENV CXX=g++
-
-RUN printenv
 
 # Install additional test dependencies.
 RUN apt-get -y install  \
@@ -82,7 +95,8 @@ RUN apt-get -y install  \
     libxml2-dev \
     libxslt1.1 \
     libxslt1-dev \
-  && apt-get clean
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install python and python packages
 RUN apt-get -y install \
@@ -95,7 +109,8 @@ RUN apt-get -y install \
     psutil \
     iiif_validator && \
     rm -rf /var/lib/apt/lists/* \
-  && apt-get clean
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 
 #
@@ -103,17 +118,11 @@ RUN apt-get -y install \
 #
 FROM base as platform-linux-amd64
 
-# Set environment variables
-ENV JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64
-
 
 #
 # The linux/arm64 variant (e.g., Apple Silicon CPUs, Amazon ARM instances, etc.)
 #
 FROM base as platform-linux-arm64
-
-# Set environment variables
-ENV JAVA_HOME /usr/lib/jvm/temurin-17-jdk-arm64
 
 
 # -----------------------------------------------------
