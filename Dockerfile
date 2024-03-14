@@ -61,8 +61,8 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 
 # Set compiler environment variables
-ENV CC=clang-17
-ENV CXX=clang++-17
+ENV CC=gcc-13
+ENV CXX=g++-13
 
 # Install newer CMake version
 ENV CMAKE_VERSION 3.28.3
