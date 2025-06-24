@@ -1,7 +1,7 @@
 #
 # The base image layer. Per default, FROM uses the $TARGETPLATFORM.
 #
-FROM ubuntu:22.04 as base
+FROM ubuntu:24.04 as base
 
 LABEL maintainer="400790+subotic@users.noreply.github.com"
 
@@ -14,18 +14,18 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Install required packages, add the PPA for GCC 13, and install GCC 13
+# Install required packages, add the PPA for GCC 14, and install GCC 14
 RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list  \
   && apt-get update \
   && apt-get install -y software-properties-common build-essential \
   && add-apt-repository ppa:ubuntu-toolchain-r/test -y \
   && apt-get update \
-  && apt-get install -y gcc-13 g++-13 \
+  && apt-get install -y gcc-14 g++-14 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Set GCC 13 as the default gcc and g++
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
+# Set GCC 14 as the default gcc and g++
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 60 --slave /usr/bin/g++ g++ /usr/bin/g++-14
 
 # Verify the installation
 RUN gcc --version && g++ --version
@@ -99,11 +99,14 @@ RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
   && rm -rf /var/lib/apt/lists/*
 
 # Install python and python packages
-RUN sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
+RUN set -x && sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
   && apt-get -qq update \
   && apt-get -y install \
-    python3.11 \
-    python3-pip && \
+    python3.12 \
+    python3-pip \
+    python3-venv && \
+    python3 -m venv /venv && \
+    . /venv/bin/activate && \
     pip3 install \
     Sphinx \
     pytest \
